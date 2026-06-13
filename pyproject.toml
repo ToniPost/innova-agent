@@ -1,0 +1,49 @@
+# © 2026 Antonio Postiguillo Moscardó — Todos los derechos reservados.
+# INNOVA Agent v3.0 — Proprietary Software. Patent-Pending.
+
+[build-system]
+requires = ["setuptools>=75.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "innova-agent"
+version = "3.0.0"
+description = "INNOVA Agent - The most advanced autonomous AI agent ever created. By ToniPost."
+authors = [{name = "Antonio Postiguillo Moscardó", email = "toni@innovaia.org"}]
+license = {text = "Proprietary - All Rights Reserved - Patent-Pending"}
+readme = "README.md"
+requires-python = ">=3.11"
+keywords = ["ai", "agent", "llm", "autonomous", "security", "stealth", "agi"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "License :: Other/Proprietary License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "openai>=1.50.0",
+    "anthropic>=0.40.0",
+    "httpx>=0.27.0",
+    "pydantic>=2.0",
+    "qdrant-client>=1.9.0",
+    "rich>=13.0",
+    "typer>=0.12.0",
+    "cryptography>=42.0.0",
+    "numpy>=1.26.0",
+    "scipy>=1.12.0",
+]
+
+[project.optional-dependencies]
+security = ["python-nmap", "paramiko", "tor", "proxychains"]
+stealth = ["scapy", "pysocks"]
+dashboard = ["fastapi", "uvicorn", "websockets"]
+voice = ["edge-tts", "pydub"]
+all = ["innova-agent[security,stealth,dashboard,voice]"]
+
+[project.scripts]
+innova-agent = "innova.__main__:main"
+
+[project.urls]
+Homepage = "https://github.com/ToniPost/innova-agent"
+Repository = "https://github.com/ToniPost/innova-agent.git"
