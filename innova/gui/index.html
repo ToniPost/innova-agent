@@ -415,7 +415,38 @@ function addTerminal(line) {
 function switchView(view) {
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
   event.target.classList.add('active');
-  addTerminal(`<span class="warn">[${new Date().toTimeString().slice(0,8)}]</span> Cambiando a vista: ${view}`);
+  
+  const commands = {
+    'chat': '',
+    'audit': 'auditar https://ejemplo.com',
+    'ghost': 'ghost',
+    'swarm': 'swarm 5',
+    'dream': 'dream',
+    'settings': 'stats'
+  };
+  
+  const cmd = commands[view] || '';
+  if (cmd) {
+    addMessage('user', cmd);
+    sendRawMessage(cmd);
+  }
+  addTerminal(`<span class="warn">[${new Date().toTimeString().slice(0,8)}]</span> Vista: ${view}`);
+}
+
+async function sendRawMessage(text) {
+  try {
+    const resp = await fetch(API, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({message: text})
+    });
+    const data = await resp.json();
+    addMessage('agent', data.response);
+    updateStatsFromData(data.stats);
+    addTerminal(`<span class="info">[${new Date().toTimeString().slice(0,8)}]</span> Respuesta · ${data.stats?.latency_ms || '?'}ms`);
+  } catch(e) {
+    addMessage('agent', '⚡ Error de conexión con el backend.');
+  }
 }
 
 // Stats en vivo cada 3 segundos
