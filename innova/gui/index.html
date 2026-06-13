@@ -347,16 +347,11 @@ body {
 </div>
 
 <script>
+const API = '/api/chat';
+const STATS_API = '/api/stats';
 let messageCount = 0;
-const agentResponses = [
-  "🕶️ Ghost Mode activado. Escaneando objetivo...\n🔍 89.248.100.67 · nginx · WordPress 7.0 · Plesk\n🏴‍☠️ 15 vulnerabilidades detectadas (5 críticas)\n📊 Generando informe PDF...\n✅ Auditoría completada. PDF en /root/informe.pdf",
-  "🔮 Quantum Consensus activado. Consultando 5 modelos...\n📊 DeepSeek: 94% confianza\n📊 Claude: 91% confianza\n📊 GPT-4o: 89% confianza\n📊 Qwen: 87% confianza\n📊 Gemini: 85% confianza\n✅ Consenso: respuesta unificada con 94% de precisión",
-  "🛡️ Zero-Day Forge analizando código...\n⚠️ Posible SQL Injection en línea 247\n⚠️ XSS reflejado en parámetro 'search'\n🔴 RCE potencial en upload.php\n📝 3 vulnerabilidades 0-day generadas para análisis",
-  "🐝 Desplegando enjambre de 10 agentes...\n🤖 agent-0: Reconocimiento inicial\n🤖 agent-1: Escaneo de puertos\n🤖 agent-2: Análisis SSL/TLS\n🤖 agent-3: Enumeración WordPress\n🤖 agent-4: OSINT\n🤖 agent-5: Fuerza bruta XML-RPC\n🤖 agent-6: Dark web scan\n🤖 agent-7: Análisis de headers\n🤖 agent-8: DNS enumeration\n🤖 agent-9: Reporte consolidado\n✅ Enjambre completado en 3.2 minutos",
-  "🧬 Auto-Evolution: analizando tasa de éxito (97.3%)...\n📈 Generación 247 → 248\n🔧 Mutación aplicada: prompt_optimization_v4\n⚡ Latencia reducida 12%\n✅ Agente evolucionado con éxito"
-];
 
-function sendMessage() {
+async function sendMessage() {
   const input = document.getElementById('chat-input');
   const text = input.value.trim();
   if (!text) return;
@@ -364,14 +359,20 @@ function sendMessage() {
   addMessage('user', text);
   input.value = '';
   
-  // Simular respuesta
-  setTimeout(() => {
-    const response = agentResponses[messageCount % agentResponses.length];
-    addMessage('agent', response);
-    messageCount++;
-    updateStats();
-    addTerminal(`<span class="info">[${new Date().toTimeString().slice(0,8)}]</span> Respuesta generada · latencia: ${Math.floor(Math.random()*50+40)}ms`);
-  }, 800 + Math.random() * 1200);
+  // Llamada real al backend
+  try {
+    const resp = await fetch(API, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({message: text})
+    });
+    const data = await resp.json();
+    addMessage('agent', data.response);
+    updateStatsFromData(data.stats);
+    addTerminal(`<span class="info">[${new Date().toTimeString().slice(0,8)}]</span> Respuesta · ${data.stats?.latency_ms || '?'}ms`);
+  } catch(e) {
+    addMessage('agent', '⚡ INNOVA Agent v3.0\n\nError conectando al backend. Asegurate de correr:\npython3 innova/gui/server.py');
+  }
 }
 
 function addMessage(role, text) {
@@ -391,10 +392,24 @@ function addTerminal(line) {
 }
 
 function updateStats() {
-  document.getElementById('stat-agents').textContent = Math.floor(Math.random()*5+1);
-  document.getElementById('stat-latency').textContent = Math.floor(Math.random()*60+40) + 'ms';
-  document.getElementById('stat-tasks').textContent = 47 + messageCount;
-  document.getElementById('stat-threats').textContent = Math.floor(Math.random()*5);
+  fetch(STATS_API).then(r=>r.json()).then(d => updateStatsFromData(d)).catch(()=>{});
+}
+
+function updateStatsFromData(d) {
+  if (!d) return;
+  if (d.agents_active) document.getElementById('stat-agents').textContent = d.agents_active;
+  if (d.latency_ms) document.getElementById('stat-latency').textContent = d.latency_ms + 'ms';
+  if (d.tasks_completed) document.getElementById('stat-tasks').textContent = d.tasks_completed;
+  if (d.threats_blocked) document.getElementById('stat-threats').textContent = d.threats_blocked;
+  if (d.memory_used) document.getElementById('stat-memory').textContent = d.memory_used;
+  if (d.uptime) document.getElementById('stat-uptime').textContent = d.uptime;
+  messageCount++;
+}
+
+function addTerminal(line) {
+  const term = document.getElementById('terminal-output');
+  term.innerHTML += '\n' + line;
+  term.scrollTop = term.scrollHeight;
 }
 
 function switchView(view) {
@@ -402,6 +417,10 @@ function switchView(view) {
   event.target.classList.add('active');
   addTerminal(`<span class="warn">[${new Date().toTimeString().slice(0,8)}]</span> Cambiando a vista: ${view}`);
 }
+
+// Stats en vivo cada 3 segundos
+setInterval(updateStats, 3000);
+updateStats();
 
 // Mensaje inicial
 addMessage('agent', '🦅 INNOVA Agent v3.0 listo.\n\n🔮 Quantum Consensus: 5 modelos activos\n🕶️ Ghost Mode: standby\n🛡️ Zero-Day Forge: listo\n🐝 Swarm: 10 agentes disponibles\n\n¿Qué necesitás?');
