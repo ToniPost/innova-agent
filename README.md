@@ -192,7 +192,7 @@ innovaia.org — Ecosistema
 │  ██  │ 🔍 Escaneando 89.248.100.67...              │   ██│
 │  ██  │ 🏴‍☠️ 15 vulnerabilidades (5 críticas)       │   ██│
 │  ██  │ 📊 PDF generado (207 KB)                    │   ██│
-│  ██  │ 📧 Enviado a claradentiweb@gmail.com        │   ██│
+│  ██  │ ✅ Auditoría completada en 4 minutos        │   ██│
 │  ██  └─────────────────────────────────────────────┘   ██│
 │  ██                                                    ██│
 │  ██  [Enviar mensaje...]                          ▷ ██│
