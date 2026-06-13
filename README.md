@@ -40,13 +40,14 @@ pip install innova-agent
 
 ```bash
 innova-agent chat                    # Charlar con el agente
-innova-agent chat -q "Auditar dulmatesa.es"  # Consulta única
+innova-agent chat -q "Analizá la seguridad de ejemplo.com"  # Consulta única
 innova-agent serve --dashboard       # Dashboard web en :8080
 innova-agent swarm --agents 10 --task "..."  # Enjambre multi-agente
 innova-agent audit https://ejemplo.com       # Auditoría de seguridad
 innova-agent ghost                   # Modo invisible
 innova-agent dream                   # Modo creativo
-innova-agent voice --call +34600000000       # Llamada telefónica IA
+innova-agent voice --call +34000000000       # Llamada telefónica IA
+innova-agent gui                     # Interfaz gráfica de escritorio
 ```
 
 ---
@@ -144,10 +145,11 @@ innovaia.org — Ecosistema
 
 | # | Feature | Qué hace |
 |---|---------|----------|
-| 37 | 🌐 Living Dashboard | Evoluciona solo según tu uso |
-| 38 | 🎨 Auto-Theme | Cambia tema por hora y estado de ánimo |
-| 39 | 📊 Real-Time Analytics | Métricas en tiempo real |
-| 40 | 🗺️ Mind Map | Visualiza conexiones de conocimiento |
+| 37 | 🖥️ Desktop GUI | Interfaz gráfica nativa (Qt6) para escritorio |
+| 38 | 🌐 Living Dashboard | Dashboard web que evoluciona solo según tu uso |
+| 39 | 🎨 Auto-Theme | Cambia tema por hora y estado de ánimo |
+| 40 | 📊 Real-Time Analytics | Métricas en tiempo real de todo el sistema |
+| 41 | 🗺️ Mind Map | Visualiza conexiones de conocimiento del agente |
 
 ---
 
@@ -185,11 +187,11 @@ innovaia.org — Ecosistema
 │  ████████████  Chat                                    ██│
 │  ██            ──────────────────────────────────────── ██│
 │  ██  ┌─────────────────────────────────────────────┐   ██│
-│  ██  │ Usuario: Auditá https://dulmatesa.es        │   ██│
+│  ██  │ Usuario: Auditá https://ejemplo.com        │   ██│
 │  ██  └─────────────────────────────────────────────┘   ██│
 │  ██  ┌─────────────────────────────────────────────┐   ██│
 │  ██  │ 🦅 INNOVA: 🕶️ Ghost Mode activado           │   ██│
-│  ██  │ 🔍 Escaneando 89.248.100.67...              │   ██│
+│  ██  │ 🔍 Escaneando IP objetivo...                │   ██│
 │  ██  │ 🏴‍☠️ 15 vulnerabilidades (5 críticas)       │   ██│
 │  ██  │ 📊 PDF generado (207 KB)                    │   ██│
 │  ██  │ ✅ Auditoría completada en 4 minutos        │   ██│
